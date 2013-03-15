@@ -3,32 +3,72 @@ package japanese;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * 日本語の名前チェック処理
+ * 半角、全角、英数字、ひらがな、カタカナ、漢字、記号についてどこまでを許可するかを判断するためのテストケース
+ * 
+ * @author jnst
+ */
 @SuppressWarnings("unused")
 public class NameChecker {
 
 	/*
-	 * ァ-ヶ は中点や長音を含まない
+	 * 漢字には UTF-8 の並び順的に日本語の漢字以外にも簡体字と繁体字も混在するため、
+	 * "ぁ-龠"指定では中国語を除外できない。
+	 * しかし一般的に中国語を除外しているケースをみないため問題ないと考えている。
+	 * "ァ-ヶ"指定は中点(なかてん)や長音(ちょうおん)を含まない。
+	 * "々"や"ー"(長音)は個別指定する必要がある。
 	 */
-	
-	// 黒龍がなぜかNG
+
+	// 日本語の漢字もNG、濁点と半濁点がOK
 	private static final String NAME_PATTERN_STRING1= "[^0-9a-zA-Zぁ-ヶ亜-黑]";
 	private static final Pattern NAME_PATTERN1 = Pattern.compile(NAME_PATTERN_STRING1);
-	// 簡体字と繁体字もなぜかOK(音引きもOK)
+	// 濁点と半濁点と中点と長音OK、々がNG
 	private static final String NAME_PATTERN_STRING2 = "[^0-9a-zA-Zぁ-龥]";
 	private static final Pattern NAME_PATTERN2 = Pattern.compile(NAME_PATTERN_STRING2);
-	// 簡体字と繁体字もなぜかOK(音引きもOK)
+	// 濁点と半濁点と中点と長音OK、々がNG
 	private static final String NAME_PATTERN_STRING3 = "[^0-9a-zA-Zぁ-龠]";
 	private static final Pattern NAME_PATTERN3 = Pattern.compile(NAME_PATTERN_STRING3);
-	//日本の漢字NG,簡体字OKになるぽい
+	// 漢字の判定が独特
 	private static final String NAME_PATTERN_STRING4 = "[^0-9a-zA-Zぁ-煕]";
 	private static final Pattern NAME_PATTERN4 = Pattern.compile(NAME_PATTERN_STRING4);
-	// 簡体字と繁体字もなぜかOK
+	// 
 	private static final String NAME_PATTERN_STRING5 = "[^\\p{Alnum}\\p{InHiragana}\\p{InKatakana}\\p{InCJKUnifiedIdeographs}]";
 	private static final Pattern NAME_PATTERN5 = Pattern.compile(NAME_PATTERN_STRING5);
 	// ヶと々と音引きに対応、中黒や濁点や半濁点はNG
 	private static final String NAME_PATTERN_STRING6 = "[^0-9a-zA-Zぁ-んァ-ヶ一-龠々ー]";
 	private static final Pattern NAME_PATTERN6 = Pattern.compile(NAME_PATTERN_STRING6);
 
+	/**
+	 * 文字列に含まれるすべての文字を判定する。
+	 * 
+	 * @param name 任意の文字列
+	 */
+	public static void check(String name) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0, len = name.length(); i < len; i++) {
+			String s = name.substring(i, i + 1);
+			Matcher matcher = NAME_PATTERN4.matcher(s);
+			if(matcher.find()){
+				sb.append(s);
+			}
+		}
+		print(name, sb);
+	}
+
+	private static void print(String name, StringBuilder sb) {
+		if (sb.length() == 0) {
+			System.out.printf("OK: %s%n", name);
+		} else {
+			System.out.printf("NG: %d/%d %s [%s]%n", sb.length(), name.length(), name, sb.toString());
+		}
+	}
+
+	/**
+	 * テストケース
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		long start = System.currentTimeMillis();
 		
@@ -143,26 +183,6 @@ public class NameChecker {
 		check("غة العربي");
 		
 		System.out.println((System.currentTimeMillis() - start) + "ms");
-	}
-
-	public static void check(String name) {
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0, len = name.length(); i < len; i++) {
-			String s = name.substring(i, i + 1);
-			Matcher matcher = NAME_PATTERN6.matcher(s);
-			if(matcher.find()){
-				sb.append(s);
-			}
-		}
-		print(name, sb);
-	}
-
-	private static void print(String name, StringBuilder sb) {
-		if (sb.length() == 0) {
-			System.out.printf("OK: %s%n", name);
-		} else {
-			System.out.printf("NG: %d/%d %s [%s]%n", sb.length(), name.length(), name, sb.toString());
-		}
 	}
 
 }
