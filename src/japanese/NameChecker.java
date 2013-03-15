@@ -21,23 +21,15 @@ public class NameChecker {
 	 */
 
 	// 日本語の漢字もNG、濁点と半濁点がOK
-	private static final String NAME_PATTERN_STRING1= "[^0-9a-zA-Zぁ-ヶ亜-黑]";
-	private static final Pattern NAME_PATTERN1 = Pattern.compile(NAME_PATTERN_STRING1);
+	private static final Pattern NAME_PATTERN1 = Pattern.compile("[^0-9a-zA-Zぁ-ヶ亜-黑]");
 	// 濁点と半濁点と中点と長音OK、々がNG
-	private static final String NAME_PATTERN_STRING2 = "[^0-9a-zA-Zぁ-龥]";
-	private static final Pattern NAME_PATTERN2 = Pattern.compile(NAME_PATTERN_STRING2);
-	// 濁点と半濁点と中点と長音OK、々がNG
-	private static final String NAME_PATTERN_STRING3 = "[^0-9a-zA-Zぁ-龠]";
-	private static final Pattern NAME_PATTERN3 = Pattern.compile(NAME_PATTERN_STRING3);
+	private static final Pattern NAME_PATTERN2 = Pattern.compile("[^0-9a-zA-Zぁ-龥]");
+	private static final Pattern NAME_PATTERN3 = Pattern.compile("[^0-9a-zA-Zぁ-龠]");
+	private static final Pattern NAME_PATTERN4 = Pattern.compile("[^\\p{Alnum}\\p{InHiragana}\\p{InKatakana}\\p{InCJKUnifiedIdeographs}]");
 	// 漢字の判定が独特
-	private static final String NAME_PATTERN_STRING4 = "[^0-9a-zA-Zぁ-煕]";
-	private static final Pattern NAME_PATTERN4 = Pattern.compile(NAME_PATTERN_STRING4);
-	// 
-	private static final String NAME_PATTERN_STRING5 = "[^\\p{Alnum}\\p{InHiragana}\\p{InKatakana}\\p{InCJKUnifiedIdeographs}]";
-	private static final Pattern NAME_PATTERN5 = Pattern.compile(NAME_PATTERN_STRING5);
-	// ヶと々と音引きに対応、中黒や濁点や半濁点はNG
-	private static final String NAME_PATTERN_STRING6 = "[^0-9a-zA-Zぁ-んァ-ヶ一-龠々ー]";
-	private static final Pattern NAME_PATTERN6 = Pattern.compile(NAME_PATTERN_STRING6);
+	private static final Pattern NAME_PATTERN5 = Pattern.compile("[^0-9a-zA-Zぁ-煕]");
+	// ヶと々と長音OK、中点や濁点や半濁点はNG
+	private static final Pattern NAME_PATTERN6 = Pattern.compile("[^0-9a-zA-Zぁ-んァ-ヶ一-龠々ー]");
 
 	/**
 	 * 文字列に含まれるすべての文字を判定する。
@@ -48,7 +40,7 @@ public class NameChecker {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0, len = name.length(); i < len; i++) {
 			String s = name.substring(i, i + 1);
-			Matcher matcher = NAME_PATTERN4.matcher(s);
+			Matcher matcher = NAME_PATTERN6.matcher(s);
 			if(matcher.find()){
 				sb.append(s);
 			}
