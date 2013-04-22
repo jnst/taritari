@@ -3,7 +3,6 @@ package performance;
 import java.util.Random;
 import java.util.regex.Pattern;
 
-@SuppressWarnings("unused")
 public class StringOrRegex {
 
 	private static final String STRING_IPHONE = "iPhone";
@@ -14,17 +13,17 @@ public class StringOrRegex {
 
 	/*
 	 * テストコード
-	 * ※同時実行すると後者が高速になるのはなぜ？
+	 * ※同時実行すると後者が高速するのはなぜ？
 	 */
 	public static void main(String[] args) {
-		// String -> 40ms
-//		testString();
-		// Regex -> 40ms
-		testRegex();
+		// String: 39-41ms
+		testString();
+		// Regex: 142-144ms
+		//testRegex();
 	}
 
 	// String.contains の速度テスト
-	private static void testString() {
+	public static void testString() {
 		long start = System.currentTimeMillis();
 		for (int i = 0; i < COUNT; i++) {
 			checkByString(generateRandomUserAgent());
@@ -33,10 +32,10 @@ public class StringOrRegex {
 	}
 
 	// Regex の速度テスト
-	private static void testRegex() {
+	public static void testRegex() {
 		long start = System.currentTimeMillis();
 		for (int i = 0; i < COUNT; i++) {
-			checkByString(generateRandomUserAgent());
+			checkByRegex(generateRandomUserAgent());
 		}
 		System.out.printf("Regex: %dms%n", (System.currentTimeMillis() - start));
 	}
@@ -57,6 +56,7 @@ public class StringOrRegex {
 		return false;
 	}
 
+	// キャッシュを懸念して念のため毎回違う文字列にする
 	private static String generateRandomUserAgent() {
 		return SAMPLE_USER_AGENT + R.nextInt(100);
 	}
