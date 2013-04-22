@@ -3,6 +3,9 @@ package performance;
 import java.util.Random;
 import java.util.regex.Pattern;
 
+/**
+ * UserAgent を String.concat/Regex で判定した場合の速度差
+ */
 public class StringOrRegex {
 
 	private static final String STRING_IPHONE = "iPhone";
@@ -17,13 +20,13 @@ public class StringOrRegex {
 	 */
 	public static void main(String[] args) {
 		// String: 39-41ms
-		testString();
+		testByString();
 		// Regex: 142-144ms
-		//testRegex();
+		//testByRegex();
 	}
 
 	// String.contains の速度テスト
-	public static void testString() {
+	public static void testByString() {
 		long start = System.currentTimeMillis();
 		for (int i = 0; i < COUNT; i++) {
 			checkByString(generateRandomUserAgent());
@@ -32,7 +35,7 @@ public class StringOrRegex {
 	}
 
 	// Regex の速度テスト
-	public static void testRegex() {
+	public static void testByRegex() {
 		long start = System.currentTimeMillis();
 		for (int i = 0; i < COUNT; i++) {
 			checkByRegex(generateRandomUserAgent());
