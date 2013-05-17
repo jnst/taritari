@@ -32,6 +32,183 @@ public class NameChecker {
 	private static final Pattern NAME_PATTERN6 = Pattern.compile("[^0-9a-zA-Zぁ-んァ-ヶ一-龠々ー]");
 
 	/**
+	 * テストケース
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		long start = System.currentTimeMillis();
+		// 数字
+		checkNumeric();
+		// アルファベット
+		checkAlphabet();
+		// ひらがな
+		checkKatakana();
+		// カタカナ
+		checkKatakana();
+		// 漢字
+		checkKanji();
+		// 記号全般
+		checkKigou();
+		// 外国語
+		checkForeignLanguage();
+		System.out.println((System.currentTimeMillis() - start) + "ms");
+	}
+
+	/**
+	 * ひらがなをチェックする。
+	 */
+	public static void checkHiragana() {
+		// 全角大文字
+		check("あいうえお");
+		check("かきくけこ");
+		check("さしすせそ");
+		check("たちつてと");
+		check("なにぬねの");
+		check("はひふへほ");
+		check("まみむめも");
+		check("やゆよ");
+		check("らりるれろ");
+		check("わゐうゑをん");
+		check("がぎぐげご");
+		check("ざじずぜぞ");
+		check("だぢづでど");
+		check("ばびぶべぼ");
+		check("ぱぴぷぺぽ");
+		// 全角小文字
+		check("ぁぃぅぇぉ");
+		check("ゃゅょ");
+	}
+
+	/**
+	 * カタカナをチェックする。
+	 */
+	public static void checkKatakana() {
+		// 全角大文字
+		check("アイウエオ");
+		check("カキクケコ");
+		check("サシスセソ");
+		check("タチツテト");
+		check("ナニヌネノ");
+		check("ハヒフヘホ");
+		check("マミムメモ");
+		check("ヤユヨ");
+		check("ラリルレロ");
+		check("ワヰウヱヲンヴ");
+		check("カギグゲゴ");
+		check("ザジズゼゾ");
+		check("ダヂヅデド");
+		check("バビブベボ");
+		check("パピプペポ");
+		// 全角小文字
+		check("ァィゥェォ");
+		check("ャュョ");
+		check("ヶ");
+		// 半角小文字
+		check("ｧｨｩｪｫ");
+		check("ｶｷｸｹｺ");
+		check("ｻｼｽｾｿ");
+		check("ﾀﾁﾂﾃﾄ");
+		check("ﾅﾆﾇﾈﾉ");
+		check("ﾊﾋﾌﾍﾎ");
+		check("ﾏﾐﾑﾒﾓ");
+		check("ﾔﾕﾖ");
+	}
+
+	/**
+	 * 漢字をチェックする。
+	 */
+	public static void checkKanji() {
+		// 日本の漢字
+		check("亜々赤白憂鬱幽霊");
+		check("嘉緒翠京桜靖ビス湖とっぽ束生夏陽夏照空々");
+		check("神生理美依羅炎皇斗幻の銀侍沙利菜愛利江留");
+		check("野風平蔵重親愛海月夢杏一将来織田信長");
+		check("邪王炎殺黒龍波");
+		// 簡体字
+		check("北京微梦创科网络技术有限公司");
+		check("对写处圆");
+		// 繁体字
+		check("亞假勛龍龜");
+		check("世棒經典賽王建民媽媽嘴大樂透劉真莫那魯道壽司");
+	}
+
+	/**
+	 * 数字をチェックする。
+	 */
+	public static void checkNumeric() {
+		// 全角
+		check("０１２３４５６７８９");
+		// 半角
+		check("0123456789");
+	}
+
+	/**
+	 * アルファベットをチェックする。
+	 */
+	public static void checkAlphabet() {
+		// 全角小文字
+		check("ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ");
+		// 全角大文字
+		check("ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ");
+		// 半角小文字
+		check("abcdefghijklmnopqrstuvwxyz");
+		// 半角大文字
+		check("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+	}
+
+	/**
+	 * 外国語をチェックする。
+	 */
+	public static void checkForeignLanguage() {
+		// ハングル
+		check("아가다오쓰나는");
+		// キリル文字
+		check("АБВГҐДЃЂЕЄЀЁЖЗЅИІЇЙЍЈКЛЉМНЊОӨПРСТ");
+		check("абвгґдѓђеєѐёжзѕиіїйѝјклљмнњоөпрст");
+		// アラビア
+		check("غة العربي");
+	}
+
+	/**
+	 * 記号全般をチェックする。 
+	 */
+	public static void checkKigou() {
+		// 記号
+		check("!#$%&*+,-.:;=?@^_`|~");
+		check("！＃＄％＆（）＊＋，．―／ ０-９：；＜＝＞？＠Ａ-Ｚ［］＾＿｀ａ-ｚ｛｜｝￣");
+		check("()[]{}<>");
+		check("\"'");
+		check("\\");
+		check("○△□◇◎●▲■◆");
+		check("~～");
+		check("-－");
+		check("♪♫♬");
+		check("※〒¶");
+		check("…‥。、∴∵,.");
+		check("↑→↓←⇐⇒⇔");
+		// 音引き
+		check("ー");
+		// 中黒
+		check("・");
+		// 濁音、半濁音
+		check("゜゛");
+		// 繰り返し記号
+		check("〃ゝゞヽヾ");
+		// 機種依存文字
+		check("①②③④⑤⑥⑦⑧⑨⑩");
+		// 特殊文字
+		check("†聖天使猫姫†");
+	}
+
+	/**
+	 * 空白をチェックする。
+	 */
+	public static void checkWhiteSpace() {
+		check(" 　	");
+	}
+
+	/**
 	 * 文字列に含まれるすべての文字を判定する。
 	 * 
 	 * @param name 任意の文字列
@@ -54,127 +231,6 @@ public class NameChecker {
 		} else {
 			System.out.printf("NG: %d/%d %s [%s]%n", sb.length(), name.length(), name, sb.toString());
 		}
-	}
-
-	/**
-	 * テストケース
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		long start = System.currentTimeMillis();
-		
-		// 半角数字
-		check("0123456789");
-		// 半角英小文字
-		check("abcdefghijklmnopqrstuvwxyz");
-		// 半角英大文字
-		check("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-		// 全角ひらがな
-		check("あいうえお");
-		check("かきくけこ");
-		check("さしすせそ");
-		check("たちつてと");
-		check("なにぬねの");
-		check("はひふへほ");
-		check("まみむめも");
-		check("やゆよ");
-		check("らりるれろ");
-		check("わゐうゑをん");
-		check("がぎぐげご");
-		check("ざじずぜぞ");
-		check("だぢづでど");
-		check("ばびぶべぼ");
-		check("ぱぴぷぺぽ");
-		// 全角ひらがな小文字
-		check("ぁぃぅぇぉ");
-		check("ゃゅょ");
-		// 全角カタカナ
-		check("アイウエオ");
-		check("カキクケコ");
-		check("サシスセソ");
-		check("タチツテト");
-		check("ナニヌネノ");
-		check("ハヒフヘホ");
-		check("マミムメモ");
-		check("ヤユヨ");
-		check("ラリルレロ");
-		check("ワヰウヱヲンヴ");
-		check("カギグゲゴ");
-		check("ザジズゼゾ");
-		check("ダヂヅデド");
-		check("バビブベボ");
-		check("パピプペポ");
-		// 全角カタカナ小文字
-		check("ァィゥェォ");
-		check("ャュョ");
-		check("ヶ");
-		// 音引き
-		check("ー");
-		// 漢字
-		check("亜々赤白憂鬱幽霊");
-		check("嘉緒翠京桜靖ビス湖とっぽ束生夏陽夏照空々");
-		check("神生理美依羅炎皇斗幻の銀侍沙利菜愛利江留");
-		check("野風平蔵重親愛海月夢杏一将来織田信長");
-		check("邪王炎殺黒龍波");
-		// 簡体字
-		check("北京微梦创科网络技术有限公司");
-		check("对写处圆");
-		// 繁体字
-		check("亞假勛龍龜");
-		check("世棒經典賽王建民媽媽嘴大樂透劉真莫那魯道壽司");
-		
-		System.out.println("---------- 以下NG ----------");
-		
-		// 全角数字
-		check("０１２３４５６７８９");
-		// 全角英小文字
-		check("ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ");
-		// 全角英大文字
-		check("ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ");
-		// 半角カタカナ
-		check("ｧｨｩｪｫ");
-		check("ｶｷｸｹｺ");
-		check("ｻｼｽｾｿ");
-		check("ﾀﾁﾂﾃﾄ");
-		check("ﾅﾆﾇﾈﾉ");
-		check("ﾊﾋﾌﾍﾎ");
-		check("ﾏﾐﾑﾒﾓ");
-		check("ﾔﾕﾖ");
-		// 中黒
-		check("・");
-		// 濁音、半濁音
-		check("゜゛");
-		// 空白
-		check(" 　	");
-		// 記号
-		check("!#$%&*+,-.:;=?@^_`|~");
-		check("！＃＄％＆（）＊＋，．―／ ０-９：；＜＝＞？＠Ａ-Ｚ［］＾＿｀ａ-ｚ｛｜｝￣");
-		check("()[]{}<>");
-		check("\"'");
-		check("\\");
-		check("○△□◇◎●▲■◆");
-		check("~～");
-		check("-－");
-		check("♪♫♬");
-		check("※〒¶");
-		check("…‥。、∴∵,.");
-		check("↑→↓←⇐⇒⇔");
-		// 繰り返し記号
-		check("〃ゝゞヽヾ");
-		// 機種依存文字
-		check("①②③④⑤⑥⑦⑧⑨⑩");
-		// 特殊文字
-		check("†聖天使猫姫†");
-		// ハングル
-		check("아가다오쓰나는");
-		// キリル文字
-		check("АБВГҐДЃЂЕЄЀЁЖЗЅИІЇЙЍЈКЛЉМНЊОӨПРСТ");
-		check("абвгґдѓђеєѐёжзѕиіїйѝјклљмнњоөпрст");
-		// アラビア語
-		check("غة العربي");
-		
-		System.out.println((System.currentTimeMillis() - start) + "ms");
 	}
 
 }
