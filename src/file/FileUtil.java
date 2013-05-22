@@ -39,12 +39,14 @@ public class FileUtil {
 
 	private static List<String> filter(List<String> list, String word, boolean isIgnore) {
 		List<String> filterdList = new ArrayList<>();
-		for (String s : list) {
-			if ((s != null) && !s.isEmpty()) {
-				if (isIgnore && !s.contains(word)) {
-					filterdList.add(s);
-				} else if (!isIgnore && s.contains(word)){
-					filterdList.add(s);
+		if ((list != null) && (word != null)) {
+			for (String s : list) {
+				if ((s != null) && !s.isEmpty()) {
+					if (isIgnore && !s.contains(word)) {
+						filterdList.add(s);
+					} else if (!isIgnore && s.contains(word)){
+						filterdList.add(s);
+					}
 				}
 			}
 		}
