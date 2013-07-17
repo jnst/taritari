@@ -28,38 +28,26 @@ public class JsonFormatter {
 		StringBuilder sb = new StringBuilder(json.length() + 255);
 		int count = 0;
 		boolean isIntoString = false;
+		
 		for (char c : json.toCharArray()) {
 			if (c == '"') {
 				isIntoString = !isIntoString;
 			}
 			
-			if (isNewLineInBefore(c)) {
-				if (!isIntoString) {
-					if (0 < count) {
-						count--;
-					}
-					sb.append('\n');
-					sb.append(getSpace(count));
+			if (c == '}') {
+				if (!isIntoString && (0 < count)) {
+					count--;
 				}
-				sb.append(c);
-			} else if (isNewLineInAfterAndSpace(c)) {
-				sb.append(c);
-				if (!isIntoString) {
-					sb.append('\n');
-					sb.append(getSpace(count));
-				}
-			} else if (isNewLineInAfterAndSpaceAndContinue(c)) {
-				sb.append(c);
+				sb.append(toRightBraceCaseString(c, count, isIntoString));
+			} else if (c == ',') {
+				sb.append(toCommaCaseString(c, count, isIntoString));
+			} else if (c == '{') {
 				if (!isIntoString) {
 					count++;
-					sb.append('\n');
-					sb.append(getSpace(count));
 				}
-			} else if (isOneSpace(c)) {
-				sb.append(c);
-				if (!isIntoString) {
-					sb.append(' ');
-				}
+				sb.append(toLeftBraceCaseString(c, count, isIntoString));
+			} else if (c == ':') {
+				sb.append(toSemicolonCaseString(c, isIntoString));
 			} else {
 				sb.append(c);
 			}
@@ -67,32 +55,43 @@ public class JsonFormatter {
 		return sb.toString();
 	}
 
-	private static boolean isNewLineInBefore(char c) {
-		if (c == '}') {
-			return true;
+	private static String toRightBraceCaseString(char c, int count, boolean isIntoString) {
+		StringBuilder sb = new StringBuilder();
+		if (!isIntoString) {
+			sb.append('\n');
+			sb.append(getSpace(count));
 		}
-		return false;
+		sb.append(c);
+		return sb.toString();
 	}
 
-	private static boolean isNewLineInAfterAndSpace(char c) {
-		if (c == ',') {
-			return true;
+	private static String toCommaCaseString(char c, int count, boolean isIntoString) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(c);
+		if (!isIntoString) {
+			sb.append('\n');
+			sb.append(getSpace(count));
 		}
-		return false;
+		return sb.toString();
 	}
 
-	private static boolean isNewLineInAfterAndSpaceAndContinue(char c) {
-		if (c == '{') {
-			return true;
+	private static String toLeftBraceCaseString(char c, int count, boolean isIntoString) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(c);
+		if (!isIntoString) {
+			sb.append('\n');
+			sb.append(getSpace(count));
 		}
-		return false;
+		return sb.toString();
 	}
 
-	private static boolean isOneSpace(char c) {
-		if (c == ':') {
-			return true;
+	private static String toSemicolonCaseString(char c, boolean isIntoString) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(c);
+		if (!isIntoString) {
+			sb.append(' ');
 		}
-		return false;
+		return sb.toString();
 	}
 
 	private static String getSpace(int count) {
